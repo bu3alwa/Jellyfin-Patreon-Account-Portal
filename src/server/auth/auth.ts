@@ -5,6 +5,7 @@ import { env } from "~/env.mjs";
 export const authOptions: NextAuthOptions = {
   theme: {
     colorScheme: "dark",
+    buttonText: "FFFFFF",
   },
   providers: [
     PatreonProvider({

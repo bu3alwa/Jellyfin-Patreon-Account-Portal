@@ -29,7 +29,7 @@ export default function Input({
         {...props}
         onChange={(e) => onChange(e.target.value)}
         className={twMerge(
-          "bg-slate-500",
+          "rounded-sm border-slate-800 bg-slate-200 text-black",
           icons && "pl-8",
           clear && "pr-8",
           className,

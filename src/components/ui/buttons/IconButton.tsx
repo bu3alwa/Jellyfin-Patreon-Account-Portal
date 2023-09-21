@@ -7,13 +7,23 @@ interface Props
     HTMLButtonElement
   > {
   children: React.ReactNode;
+  colorStyle?: "blue" | "red";
 }
-export default function Button({ children, ...props }: Props) {
+export default function IconButton({
+  children,
+  colorStyle = "blue",
+  ...props
+}: Props) {
+  const color = {
+    blue: "bg-blue-400 hover:bg-blue-500",
+    red: "bg-red-400 hover:bg-red-500",
+  };
   return (
     <button
       {...props}
       className={twMerge(
-        "border-1 rounded-sm border-white bg-blue-400 p-1 hover:bg-blue-500",
+        "border-1 rounded-sm border-white p-1",
+        color[colorStyle],
         props.className,
       )}
     >

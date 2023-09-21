@@ -33,6 +33,10 @@ const config = {
           "",
         ),
       },
+      {
+        protocol: "https",
+        hostname: "c8.patreon.com",
+      },
     ],
   },
 };

@@ -1,43 +1,26 @@
-"use client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import Image from "next/image";
 import Button from "~/components/ui/buttons/Button";
-import Input from "~/components/ui/inputs/Input";
-import Spacer from "~/components/ui/misc/Spacer";
+import { getServerAuthSession } from "~/server/auth/auth";
+import ResetPassword from "~/components/ResetPassword";
+import HorizontalRule from "~/components/ui/horizontalRule/HorizontalRule";
+import Whitelist from "~/components/whitelist/Whitelist";
 
-export default function Login() {
-  const session = useSession();
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+export default async function Login() {
+  const session = await getServerAuthSession();
 
-  console.log(session);
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
-      className="flex flex-col gap-6 border-[1px] border-gray-800 bg-slate-500 p-4 drop-shadow "
-    >
-      <Spacer size={6} />
-      <span>Image Here</span>
-      <span>Name</span>
-      <span className="flex flex-col gap-2">
-        <span>Password:</span>
-        <Input
-          value={password}
-          onChange={(e) => setPassword(e)}
-          type="password"
-        />
-      </span>
-      <span className="flex flex-col gap-2">
-        <span>Confirm Password:</span>
-        <Input
-          value={password2}
-          onChange={(e) => setPassword2(e)}
-          type="password"
-        />
-      </span>
-      <Button type="submit">Submit</Button>
-    </form>
+    <div className="flex flex-col items-center justify-center gap-4 rounded-sm border-[1px] border-gray-800 bg-slate-500 p-8 drop-shadow ">
+      {session?.user.image && (
+        <Image width={100} height={100} src={session?.user.image} alt="Image" />
+      )}
+      <span>{session?.user.name}</span>
+      <span>{session?.user.email}</span>
+      <HorizontalRule className="w-full" />
+      <ResetPassword />
+      <HorizontalRule className="w-full" />
+      <Whitelist />
+    </div>
   );
 }

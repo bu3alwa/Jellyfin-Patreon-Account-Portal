@@ -13,7 +13,7 @@ export const env = createEnv({
     PATREON_ACCESS_TOKEN: z.string(),
     PATREON_HOOKS_SECRET: z.string(),
     NEXTAUTH_SECRET: z.string(),
-    NEXTAUTH_URL: z.string().url(),
+    NEXTAUTH_URL: z.string().url().optional(),
     JELLYFIN_URL: z.string().url(),
   },
 
