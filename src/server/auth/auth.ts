@@ -20,6 +20,7 @@ export const authOptions: NextAuthOptions = {
       console.log("token", token);
       return {
         ...session,
+        type: "patreon",
         user: {
           ...session.user,
           id: token.sub,

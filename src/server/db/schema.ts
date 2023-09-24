@@ -1,6 +1,6 @@
-import { text, sqliteTable, unique, integer } from "drizzle-orm/sqlite-core";
+import { text, sqliteTable, integer } from "drizzle-orm/sqlite-core";
 
-const whitelist = sqliteTable("whitelist", {
-  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+export const whitelist = sqliteTable("whitelist", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   username: text("username").unique(),
 });

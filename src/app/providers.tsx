@@ -1,10 +1,24 @@
 "use client";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, cache } from "react";
 import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider, Hydrate } from "@tanstack/react-query";
 
 type Props = {
   children: ReactNode;
 };
 export default function Providers({ children }: Props) {
-  return <SessionProvider>{children}</SessionProvider>;
+  const getQueryClient = cache(() => new QueryClient({
+    defaultOptions: {
+      mutations: {
+        onError: (e) => {``
+          console.log(e)
+        }
+      }
+  }
+}))
+
+  return (
+        <QueryClientProvider client={getQueryClient()}>
+        <SessionProvider>{children}</SessionProvider>
+      </QueryClientProvider>);
 }

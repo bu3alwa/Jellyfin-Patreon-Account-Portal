@@ -7,14 +7,18 @@
  * need to use are documented accordingly near the end.
  */
 
+import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { type Session } from "next-auth";
+import { headers } from "next/headers";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "../db/db";
 import { getServerAuthSession } from "../auth/auth";
+import { api } from "~/utils/server";
+import jellyFinSdk from "../jellyfinSdk/JellyFin";
 
 /**
  * 1. CONTEXT
@@ -78,7 +82,9 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       data: {
         ...shape.data,
         zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+          error.code === "BAD_REQUEST" && error.cause instanceof ZodError
+            ? error.cause.flatten()
+            : null,
       },
     };
   },
@@ -129,3 +135,30 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+type Endpoints = keyof typeof api;
+type Route = keyof (typeof api)[Endpoints];
+export const createAction = (endpoint?: Endpoints, route?: Route) =>
+  experimental_createServerActionHandler(t, {
+    async createContext() {
+      const session = await getServerAuthSession();
+
+      // revalidate a route if needed
+      const revalidationRoute = endpoint && route && api[endpoint][route];
+
+      // it does exist but not sure how to make it not complain,
+      // don't care that much for it being typed correctly with experimental
+      // version for trpc
+      // @ts-ignore
+      revalidationRoute?.revalidate && revalidationRoute.revalidate();
+
+      return {
+        session,
+        db,
+        headers: {
+          // Pass the cookie header to the API
+          cookies: headers().get("cookie") ?? "",
+        },
+      };
+    },
+  });

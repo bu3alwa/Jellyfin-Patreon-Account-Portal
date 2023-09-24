@@ -3,6 +3,7 @@ import { AuthenticationResult } from "@jellyfin/sdk/lib/generated-client/models"
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
+    type: "patreon" | "google";
     user: DefaultSession["user"] & {
       id: string;
       // ...other properties
