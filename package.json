@@ -12,7 +12,9 @@
     "start": "pnp run db:prepare && next start",
     "db:prepare": "pnpm run db:generate && pnpm run db:push",
     "db:generate": "drizzle-kit generate:sqlite",
-    "db:push": "drizzle-kit push:sqlite"
+    "db:push": "drizzle-kit push:sqlite",
+    "docker:build": "docker build --build-arg NODE_VERSION=$(cat ./.nvmrc | tr -cd [:digit:].) .",
+    "type:check": "tsc"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
