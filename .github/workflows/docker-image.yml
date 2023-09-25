@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build --build-arg NODE_VERSION=$(cat .nvmrc | tr -cd [:digit:].) -f Dockerfile --tag jellyfin-patreon-account-portal:$GITHUB_REF_NAME
+        run: docker build --build-arg NODE_VERSION=$(cat .nvmrc | tr -cd [:digit:].) -f Dockerfile --tag jellyfin-patreon-account-portal:$GITHUB_REF_NAME .
