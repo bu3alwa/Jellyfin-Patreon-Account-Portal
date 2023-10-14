@@ -17,12 +17,13 @@ function Tabs({ tab }: TabsProps) {
       <nav className="inline-flex">
         {tab.map((panel, index) => (
           <button
+            key={panel.header}
             onClick={() => SetActiveTab(index)}
             className={twMerge(
               activeTab === index
-                ? "border-orange-200 font-bold text-orange-200"
-                : "text-white",
-              "border-b-2 p-2 hover:border-orange-300",
+                ? "cursor-default border-orange-200 font-bold text-orange-200"
+                : "text-white hover:border-orange-300 hover:text-orange-300",
+              "border-b-2 p-2 ",
             )}
           >
             {panel.header}

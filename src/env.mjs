@@ -15,6 +15,9 @@ export const env = createEnv({
     NEXTAUTH_SECRET: z.string(),
     NEXTAUTH_URL: z.string().url().optional(),
     JELLYFIN_URL: z.string().url(),
+    ADMIN_EMAIL: z.string().email(),
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -39,6 +42,9 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     JELLYFIN_URL: process.env.JELLYFIN_URL,
     PATREON_HOOKS_SECRET: process.env.PATREON_HOOKS_SECRET,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

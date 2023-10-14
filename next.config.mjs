@@ -40,6 +40,10 @@ const config = {
         protocol: "https",
         hostname: "c8.patreon.com",
       },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+      },
     ],
   },
 };

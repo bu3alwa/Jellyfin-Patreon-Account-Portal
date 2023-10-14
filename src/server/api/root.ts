@@ -1,5 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { whitelistRouter } from "./routers/whitelistRouter";
+import { subscribersRouter } from "./routers/subscribers";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { whitelistRouter } from "./routers/whitelistRouter";
  */
 export const appRouter = createTRPCRouter({
   whitelist: whitelistRouter,
+  subscribers: subscribersRouter,
 });
 
 // export type definition of API
