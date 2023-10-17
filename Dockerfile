@@ -19,7 +19,7 @@ COPY --from=deps /app/node_modules ./node_modules
 # Don't validate env when building
 ENV SKIP_ENV_VALIDATION 1
 
-RUN pnpm run build
+RUN npm run build
 
 FROM node:${NODE_VERSION}-alpine AS runner
 WORKDIR /app
