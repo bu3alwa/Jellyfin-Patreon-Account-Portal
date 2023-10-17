@@ -20,7 +20,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-      #
+    env:
+      NODE_VERSION: $(cat .nvmrc | tr -cd [:digit:].)
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
