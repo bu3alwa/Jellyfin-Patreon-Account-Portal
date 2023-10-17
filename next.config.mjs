@@ -24,20 +24,6 @@ const config = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: env.env.JELLYFIN_URL.replace("https://", "").replace(
-          "http://",
-          "",
-        ),
-      },
-      {
-        protocol: "https",
-        hostname: env.env.JELLYFIN_URL.replace("https://", "").replace(
-          "http://",
-          "",
-        ),
-      },
-      {
         protocol: "https",
         hostname: "c8.patreon.com",
       },
