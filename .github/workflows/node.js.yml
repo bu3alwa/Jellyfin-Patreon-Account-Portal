@@ -7,15 +7,16 @@ on:
     branches: ["main"]
 
 steps:
-  - run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-    id: nvm
+  - name: Get version in nvmrc and set to output to env variable
+    id: nvmrc
+    run: echo "NODE_VERSION=$(cat .nvmrc | tr -cd [:digit:].)" >> "$GITHUB_ENV"
   - uses: actions/checkout@v4
   - uses: pnpm/action-setup@0609f0983b7a228f052f81ef4c3d6510cae254ad
     with:
       version: 6.10.0
   - uses: actions/setup-node@v3
     with:
-      node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+      node-version: ${{ env.NODE_VERSION }}
       cache: "pnpm"
   - run: pnpm install
   - run: pnpm run format:check
