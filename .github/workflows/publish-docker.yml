@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Get version in nvmrc and set to output
         id: nvmrc
-        run: echo "NODE_VERSION=$(cat .nvmrc | tr -cd [:digit:].)" >> "GITHUB_OUTPUT"
+        run: echo "NODE_VERSION=$(cat .nvmrc | tr -cd [:digit:].)" | tee "GITHUB_OUTPUT"
       - name: Set the output of the nvmrc to a env variable
         env:
           NODE_VERSION: ${{ steps.nvmrc.outputs.NODE_VERSION }}
