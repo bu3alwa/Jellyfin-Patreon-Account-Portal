@@ -4,10 +4,9 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { whitelist } from "~/server/db/schema";
 
-
 export const whiteListRoutes = {
-  getAll: protectedProcedure.query(async ({ ctx }) => {
-    const getQuery = await ctx.db.select().from(whitelist).prepare().all();
+  getAll: protectedProcedure.query(({ ctx }) => {
+    const getQuery = ctx.db.select().from(whitelist).prepare().all();
     return getQuery;
   }),
 
@@ -17,7 +16,7 @@ export const whiteListRoutes = {
         username: z.string().email(),
       }),
     )
-    .mutation(async ({ctx, input}) => {
+    .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(whitelist).values({
         username: input.username,
       });
@@ -31,8 +30,11 @@ export const whiteListRoutes = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.delete(whitelist).where(eq(whitelist.id, input.id)).returning();
-      return  { message: 'successful'}
+      await ctx.db
+        .delete(whitelist)
+        .where(eq(whitelist.id, input.id))
+        .returning();
+      return { message: "successful" };
     }),
-}
+};
 export const whitelistRouter = createTRPCRouter(whiteListRoutes);

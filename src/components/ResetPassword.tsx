@@ -2,7 +2,7 @@
 
 import Button from "./ui/buttons/Button";
 import Spacer from "./ui/misc/Spacer";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Input from "./ui/inputs/Input";
 import { useAction } from "~/utils/client";
 import { resetPasswordAction } from "~/server/api/actions/resetPasswordAction";

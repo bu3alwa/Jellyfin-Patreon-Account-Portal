@@ -9,12 +9,13 @@ export default async function WhitelistItems() {
     <>
       {list?.map((item) => (
         <form
+          key={item.id}
           action={async () => {
             "use server";
             await api.whitelist.deleteById.mutate({
               id: item.id,
             });
-            api.whitelist.getAll.revalidate()
+            void api.whitelist.getAll.revalidate();
           }}
           className="inline-flex justify-between gap-2"
         >
@@ -24,6 +25,6 @@ export default async function WhitelistItems() {
           </IconButton>
         </form>
       ))}
-</>
-  )
+    </>
+  );
 }

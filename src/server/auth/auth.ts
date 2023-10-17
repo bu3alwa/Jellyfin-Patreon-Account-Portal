@@ -1,10 +1,8 @@
-import { NextAuthOptions, User, getServerSession } from "next-auth";
+import { type NextAuthOptions, getServerSession } from "next-auth";
 import PatreonProvider from "next-auth/providers/patreon";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
-import NextAuth, { DefaultSession } from "next-auth";
-import { AuthenticationResult } from "@jellyfin/sdk/lib/generated-client/models";
-import { profile } from "console";
+import { type DefaultSession } from "next-auth";
 import { db } from "../db/db";
 
 declare module "next-auth" {
@@ -47,7 +45,7 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "patreon") return true;
       if (isAdmin) return true;
 
-      if (user && user.email) return false;
+      if (user?.email) return false;
 
       const whitelist = await db.query.whitelist.findFirst({
         where: (whitelist, { eq }) => eq(whitelist.username, user.email!),
@@ -57,7 +55,7 @@ export const authOptions: NextAuthOptions = {
 
       return false;
     },
-    jwt: async ({ account, profile, token }) => {
+    jwt: ({ account, profile, token }) => {
       // if (env.NODE_ENV === "development") {
       //   console.log("profile", profile);
       //   console.log("account", account);

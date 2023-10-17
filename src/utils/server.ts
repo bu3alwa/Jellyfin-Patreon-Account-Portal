@@ -5,7 +5,7 @@ import { experimental_nextHttpLink } from "@trpc/next/app-dir/links/nextHttp";
 import { experimental_createTRPCNextAppDirServer } from "@trpc/next/app-dir/server";
 import { cookies } from "next/headers";
 import superjson from "superjson";
-import { AppRouter } from "~/server/api/root";
+import { type AppRouter } from "~/server/api/root";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url

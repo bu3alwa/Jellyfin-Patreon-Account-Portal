@@ -9,7 +9,6 @@
 
 import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { type Session } from "next-auth";
 import { headers } from "next/headers";
 import superjson from "superjson";
@@ -18,7 +17,7 @@ import { ZodError } from "zod";
 import { db } from "../db/db";
 import { getServerAuthSession } from "../auth/auth";
 import { api } from "~/utils/server";
-import jellyFinSdk from "../jellyfinSdk/JellyFin";
+import { type FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
 /**
  * 1. CONTEXT
@@ -56,6 +55,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { req } = opts;
 
   // Get the session from the server using the getServerSession wrapper function
@@ -162,8 +162,10 @@ export const createAction = (endpoint?: Endpoints, route?: Route) =>
       // it does exist but not sure how to make it not complain,
       // don't care that much for it being typed correctly with experimental
       // version for trpc
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      revalidationRoute?.revalidate && revalidationRoute.revalidate();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      revalidationRoute?.revalidate?.();
 
       return {
         session,

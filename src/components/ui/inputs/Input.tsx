@@ -1,13 +1,12 @@
 "use client";
 
 import {
-  DetailedHTMLProps,
-  InputHTMLAttributes,
+  type DetailedHTMLProps,
+  type InputHTMLAttributes,
   forwardRef,
-  useState,
 } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { IconType } from "react-icons/lib";
+import { type IconType } from "react-icons/lib";
 import { twMerge } from "tailwind-merge";
 
 interface Props
@@ -25,7 +24,7 @@ export default forwardRef<HTMLInputElement, Props>(function Input(
 ) {
   return (
     <span className="relative">
-      {icons && icons({ className: "absolute left-[0.5rem] top-[0.25rem]" })}
+      {icons?.({ className: "absolute left-[0.5rem] top-[0.25rem]" })}
       <input
         ref={ref}
         {...props}

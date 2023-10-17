@@ -2,7 +2,7 @@ import { env } from "~/env.mjs";
 import { appRouter } from "~/server/api/root";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { createTRPCContext } from "~/server/api/trpc";
-import { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 
 // export API handler
 const handler = (req: NextRequest) =>

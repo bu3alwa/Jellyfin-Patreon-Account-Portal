@@ -1,8 +1,7 @@
-import { DetailedHTMLProps, HTMLAttributes } from "react";
+import { type DetailedHTMLProps, type HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface Props
-  extends DetailedHTMLProps<HTMLAttributes<HTMLHRElement>, HTMLHRElement> {}
+type Props = DetailedHTMLProps<HTMLAttributes<HTMLHRElement>, HTMLHRElement>;
 
 const HorizontalRule: React.FC<Props> = ({ ...props }) => {
   return (

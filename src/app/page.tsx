@@ -4,7 +4,6 @@ import ResetPassword from "~/components/ResetPassword";
 import Whitelist from "~/components/whitelist/Whitelist";
 import Tabs from "~/components/ui/misc/Tabs";
 import Subscribers from "~/components/Subscribers";
-import Button from "~/components/ui/buttons/Button";
 import Link from "next/link";
 
 export default async function Login() {

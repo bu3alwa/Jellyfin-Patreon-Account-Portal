@@ -48,7 +48,7 @@ export const resetPasswordRoutes = {
       }
 
       // update the users password
-      if (currentUser && currentUser.Id) {
+      if (currentUser?.Id) {
         const triggerUpdateRes = await getUserApi(api).updateUserPassword({
           userId: currentUser.Id,
           updateUserPassword: {

@@ -5,8 +5,8 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { whitelist } from "~/server/db/schema";
 
 export const subscribersRoutes = {
-  getAll: protectedProcedure.query(async ({ ctx }) => {
-    const getQuery = await ctx.db.select().from(whitelist).prepare().all();
+  getAll: protectedProcedure.query(({ ctx }) => {
+    const getQuery = ctx.db.select().from(whitelist).prepare().all();
     return getQuery;
   }),
 

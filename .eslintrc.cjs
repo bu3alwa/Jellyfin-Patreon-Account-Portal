@@ -4,12 +4,15 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ["@typescript-eslint", "@tanstack/eslint-plugin-query"],
+  plugins: [
+    "@typescript-eslint",
+    //"@tanstack/eslint-plugin-query"
+  ],
   extends: [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
-    "@tanstack/eslint-plugin-query",
+    //"@tanstack/eslint-plugin-query",
   ],
   rules: {
     // These opinionated rules are enabled in stylistic-type-checked above.
@@ -25,6 +28,8 @@ const config = {
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-misused-promises": "off",
   },
 };
 
