@@ -23,9 +23,6 @@ export default function WhitelistCreate() {
   } = form;
   const formRef = useRef(null);
   const mutation = useAction(createWhitelistAction, {
-    onSuccess(data) {
-      console.log(data);
-    },
     onError(error) {
       console.log(error);
     },

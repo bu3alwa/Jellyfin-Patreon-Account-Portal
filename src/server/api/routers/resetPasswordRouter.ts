@@ -14,21 +14,13 @@ export const resetPasswordRoutes = {
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      console.log(ctx.session);
       if (!ctx.session.user.email) {
         throw "Missing email try re-logging in or contact admin.";
       }
 
-      // when not patreon check whitelist
-      if (ctx.session.type != "patreon") {
-        const whitelist = ctx.db.query.whitelist.findFirst({
-          where: (whitelist, { eq }) =>
-            eq(whitelist.username, ctx.session.user.email!),
-        });
-
-        if (!whitelist) {
-          throw "User not whitelisted to the server. Contact admin.";
-        }
-      }
+      const jellyfinError =
+        "Error: Something went wrong when contacting jellyfin";
 
       const api = new Jellyfin(jellyFinSdkConfig).createApi(
         env.JELLYFIN_URL,
@@ -43,30 +35,40 @@ export const resetPasswordRoutes = {
 
       // create user if it does not exist
       if (!currentUser) {
-        return await getUserApi(api).createUserByName({
+        const createUserRes = await getUserApi(api).createUserByName({
           createUserByName: {
             Name: ctx.session.user.email,
             Password: input.password,
           },
         });
+
+        if (createUserRes.statusText !== "OK") throw jellyfinError;
+
+        return { message: "successful" };
       }
 
       // update the users password
       if (currentUser && currentUser.Id) {
-        await getUserApi(api).updateUserPassword({
-          userId: currentUser?.Id,
+        const triggerUpdateRes = await getUserApi(api).updateUserPassword({
+          userId: currentUser.Id,
           updateUserPassword: {
             ResetPassword: true,
           },
         });
 
-        return await getUserApi(api).updateUserPassword({
-          userId: currentUser?.Id,
+        if (triggerUpdateRes.status !== 204) throw jellyfinError;
+
+        const updateRes = await getUserApi(api).updateUserPassword({
+          userId: currentUser.Id,
           updateUserPassword: {
             CurrentPassword: "",
             NewPw: input.password,
+            ResetPassword: true,
           },
         });
+
+        if (updateRes.status !== 204) throw jellyfinError;
+        return { message: "successful" };
       }
     }),
 };

@@ -29,7 +29,9 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
-  const mutation = useAction(resetPasswordAction);
+  const mutation = useAction(resetPasswordAction, {
+    onError: (e) => console.log(e),
+  });
 
   const formRef = useRef(null);
   const form = useZodForm({ schema: passwordValidation });

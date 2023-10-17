@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format:check": "prettier src --check",
     "format": "prettier src/ --write",
-    "start": "pnp run db:prepare && next start",
+    "start": "pnpm run db:prepare && next start",
     "db:prepare": "pnpm run db:generate && pnpm run db:push",
     "db:generate": "drizzle-kit generate:sqlite",
     "db:push": "drizzle-kit push:sqlite",
