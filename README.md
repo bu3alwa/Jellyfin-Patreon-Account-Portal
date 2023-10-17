@@ -10,11 +10,11 @@ And have a hook to auto remove the user when they unsubscribe
 
 - [x] whitelist create and delete
 - [x] password reset based on whitelist or patreon sub
-- [ ] ensure patreon token is only for subscribers and no one else
+- [x] ensure patreon token is only for subscribers and no one else
 - [ ] add image from patreon or other providers
-- [ ] create tabs in ui to switch between menus for admins
+- [x] create tabs in ui to switch between menus for admins
 - [ ] figure out admin from patreon ownership
-- [ ] add google for whitelist
+- [x] add google for whitelist
 - [ ] custom login and logout page
 - [ ] resend or email templates and sending emails
 - [ ] remove users on subscription end using webhooks
