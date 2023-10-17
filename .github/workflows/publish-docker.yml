@@ -21,15 +21,15 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: get var
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Get version in nvmrc and set to output
         id: nvmrc
         run: echo "NODE_VERSION=$(cat .nvmrc | tr -cd [:digit:].)" >> "GITHUB_OUTPUT"
-      - name: set env
+      - name: Set the output of the nvmrc to a env variable
         env:
           NODE_VERSION: ${{ steps.nvmrc.outputs.NODE_VERSION }}
         run: echo "The node version is $NODE_VERSION"
-      - name: Checkout repository
-        uses: actions/checkout@v4
       # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
