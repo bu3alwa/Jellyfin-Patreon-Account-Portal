@@ -21,8 +21,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
-      - run: pnpm install
-      - run: pnpm run format:check
-      - run: pnpm run lint
-        with:
+      - name: install node modules
+        run: pnpm install
+      - name: Check format
+        run: pnpm run format:check
+      - name: Check linting
+        env:
           SKIP_ENV_VALIDATION: 1
+        run: pnpm run lint
