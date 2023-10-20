@@ -24,3 +24,5 @@ jobs:
       - run: pnpm install
       - run: pnpm run format:check
       - run: pnpm run lint
+        with:
+          SKIP_ENV_VALIDATION: 1
