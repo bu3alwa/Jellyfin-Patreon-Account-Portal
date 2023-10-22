@@ -1,5 +1,8 @@
 ARG NODE_VERSION
 FROM node:${NODE_VERSION}-alpine AS deps
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
 WORKDIR /app
 
 RUN apk add --no-cache libc6-compat curl
@@ -8,7 +11,7 @@ COPY pnpm-lock.yaml* ./
 COPY package.json ./
 RUN curl -L https://unpkg.com/@pnpm/self-installer | node
 
-RUN pnpm i --frozen-lockfile; 
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i --frozen-lockfile; 
 
 FROM deps AS builder
 WORKDIR /app

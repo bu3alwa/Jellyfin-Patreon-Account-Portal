@@ -28,7 +28,7 @@
     "axios": "^1.5.0",
     "better-sqlite3": "^8.6.0",
     "drizzle-orm": "^0.28.6",
-    "next": "^13.5.4",
+    "next": "^13.5.1",
     "next-auth": "^4.23.1",
     "only-allow": "^1.1.1",
     "react": "18.2.0",
@@ -62,10 +62,5 @@
   "ct3aMetadata": {
     "initVersion": "7.20.2"
   },
-  "packageManager": "npm@10.1.0",
-  "engines": {
-    "node": ">=18.12.0 <19.0.0",
-    "npm": ">=8.19.2",
-    "yarn": "Yarn is not supported. Please use NPM."
-  }
+  "packageManager": "pnpm@8.9.2"
 }
