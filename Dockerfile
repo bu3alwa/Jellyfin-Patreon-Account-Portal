@@ -11,12 +11,14 @@ COPY pnpm-lock.yaml* ./
 COPY package.json ./
 RUN curl -L https://unpkg.com/@pnpm/self-installer | node
 
+RUN echo 'node-linker=hoisted' > .npmrc
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm i --frozen-lockfile; 
 
 FROM deps AS builder
 WORKDIR /app
 
 COPY . .
+RUN echo 'node-linker=hoisted' > .npmrc
 COPY --from=deps /app/node_modules ./node_modules
 
 ENV DOCKER 'true'
