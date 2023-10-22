@@ -18,6 +18,7 @@ export const env = createEnv({
     ADMIN_EMAIL: z.string().email(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    DOCKER: z.literal("true").optional(),
   },
 
   /**
@@ -34,6 +35,7 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    DOCKER: process.env.DOCKER,
     NODE_ENV: process.env.NODE_ENV,
     PATREON_ACCESS_TOKEN: process.env.PATREON_ACCESS_TOKEN,
     PATREON_CLIENT_ID: process.env.PATREON_CLIENT_ID,
