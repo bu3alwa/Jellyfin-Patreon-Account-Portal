@@ -39,11 +39,14 @@ ENV DOCKER 'true'
 
 EXPOSE 3000
 
-COPY --from=builder  /app/.next/standalone ./
+#COPY --from=builder  /app/.next/standalone ./
+COPY --from=builder  /app/ ./
 COPY --from=builder /config/ /config/
 
 ENV PORT 3000
 # set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["node", "server.js"]
+# Some bug with nextjs for now use next start
+#CMD ["node", "server.js"]
+CMD ["npx", "next", "start"]
