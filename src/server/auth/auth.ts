@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "patreon") return true;
       if (isAdmin) return true;
 
-      if (user?.email) return false;
+      if (!user?.email) return false;
 
       const whitelist = await db.query.whitelist.findFirst({
         where: (whitelist, { eq }) => eq(whitelist.username, user.email!),
