@@ -72,7 +72,6 @@ const ResetPassword = () => {
         })}
         className="flex flex-col"
       >
-        <h2>Reset Password</h2>
         <Spacer size={2} />
         <span className="flex flex-col gap-2">
           <span>Password:</span>
