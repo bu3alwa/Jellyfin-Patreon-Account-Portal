@@ -72,7 +72,7 @@ const ResetPassword = () => {
         })}
         className="flex flex-col"
       >
-        <Spacer size={2} />
+        <Spacer size={1} />
         <span className="flex flex-col gap-2">
           <span>Password:</span>
           <Input
