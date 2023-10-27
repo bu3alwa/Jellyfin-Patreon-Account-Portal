@@ -28,13 +28,18 @@ export const resetPasswordRoutes = {
       );
 
       // check jellyfin if user exists
+      console.log("test");
+
       const usersList = await getUserApi(api).getUsers();
+      console.log("boo");
       const currentUser = usersList.data.find(
         (u) => u.Name === ctx.session.user.email,
       );
+      console.log("boo2");
 
       // create user if it does not exist
       if (!currentUser) {
+        console.log("currentUser");
         const createUserRes = await getUserApi(api).createUserByName({
           createUserByName: {
             Name: ctx.session.user.email,
@@ -47,27 +52,31 @@ export const resetPasswordRoutes = {
         return { message: "successful" };
       }
 
+      console.log("boo2");
       // update the users password
       if (currentUser?.Id) {
+        console.log("boo3");
         const triggerUpdateRes = await getUserApi(api).updateUserPassword({
           userId: currentUser.Id,
           updateUserPassword: {
             ResetPassword: true,
           },
         });
+        console.log(triggerUpdateRes);
 
         if (triggerUpdateRes.status !== 204) throw jellyfinError;
 
+        console.log("boo4");
         const updateRes = await getUserApi(api).updateUserPassword({
           userId: currentUser.Id,
           updateUserPassword: {
             CurrentPassword: "",
             NewPw: input.password,
-            ResetPassword: true,
           },
         });
 
         if (updateRes.status !== 204) throw jellyfinError;
+
         return { message: "successful" };
       }
     }),

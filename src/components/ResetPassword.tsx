@@ -35,11 +35,11 @@ const ResetPassword = () => {
   });
 
   useEffect(() => {
-    if (mutation.status === 'success') {
-      setPassword('')
-      setPassword2('')
+    if (mutation.status === "success") {
+      setPassword("");
+      setPassword2("");
     }
-  }, [mutation.status])
+  }, [mutation.status]);
 
   const formRef = useRef(null);
   const form = useZodForm({ schema: passwordValidation });
@@ -50,59 +50,58 @@ const ResetPassword = () => {
     formState: { errors },
   } = form;
 
-
   return (
     <>
-    <FormProvider {...form}>
-        {mutation.status === 'success' &&
-        <Hint type='success' className="w-full" >
-          Success
-        </Hint>
-        }
-        {mutation.status === 'error' &&
-        <Hint type='error' className="w-full" >
-          Error
-        </Hint>
-        }
-      <form
-        ref={formRef}
-        action={resetPasswordAction}
-        onSubmit={handleSubmit(async () => {
-          await mutation.mutateAsync(new FormData(formRef.current!));
-        })}
-        className="flex flex-col"
-      >
-        <Spacer size={1} />
-        <span className="flex flex-col gap-2">
-          <span>Password:</span>
-          <Input
-            {...register("password")}
-            value={password}
-            className="w-full"
-            onChange={(e) => setPassword(e.currentTarget.value)}
-            type="password"
-          />
-        </span>
-        {errors.password && (
-          <span className="text-red-500">{errors.password.message}</span>
+      <FormProvider {...form}>
+        {mutation.status === "success" && (
+          <Hint type="success" className="w-full">
+            Success
+          </Hint>
         )}
-        <span className="flex flex-col gap-2">
-          <span>Confirm Password:</span>
-          <Input
-            {...register("password2")}
-            value={password2}
-            className="w-full"
-            onChange={(e) => setPassword2(e.currentTarget.value)}
-            type="password"
-          />
-        </span>
-        {errors.password2 && (
-          <span className="text-red-500">{errors.password2.message}</span>
+        {mutation.status === "error" && (
+          <Hint type="error" className="w-full">
+            Error
+          </Hint>
         )}
-        <Spacer size={2} />
-        <Button type="submit">Submit</Button>
-      </form>
-    </FormProvider>
+        <form
+          ref={formRef}
+          action={resetPasswordAction}
+          onSubmit={handleSubmit(async () => {
+            await mutation.mutateAsync(new FormData(formRef.current!));
+          })}
+          className="flex flex-col"
+        >
+          <Spacer size={1} />
+          <span className="flex flex-col gap-2">
+            <span>Password:</span>
+            <Input
+              {...register("password")}
+              value={password}
+              className="w-full"
+              onChange={(e) => setPassword(e.currentTarget.value)}
+              type="password"
+            />
+          </span>
+          {errors.password && (
+            <span className="text-red-500">{errors.password.message}</span>
+          )}
+          <span className="flex flex-col gap-2">
+            <span>Confirm Password:</span>
+            <Input
+              {...register("password2")}
+              value={password2}
+              className="w-full"
+              onChange={(e) => setPassword2(e.currentTarget.value)}
+              type="password"
+            />
+          </span>
+          {errors.password2 && (
+            <span className="text-red-500">{errors.password2.message}</span>
+          )}
+          <Spacer size={2} />
+          <Button type="submit">Submit</Button>
+        </form>
+      </FormProvider>
     </>
   );
 };
