@@ -2,13 +2,14 @@
 
 import Button from "./ui/buttons/Button";
 import Spacer from "./ui/misc/Spacer";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "./ui/inputs/Input";
 import { useAction } from "~/utils/client";
 import { resetPasswordAction } from "~/server/api/actions/resetPasswordAction";
 import { z } from "zod";
 import useZodForm from "~/utils/hooks/useZodForm";
 import { FormProvider } from "react-hook-form";
+import Hint from "./ui/hint/Hint";
 
 const passwordValidation = z
   .object({
@@ -33,6 +34,13 @@ const ResetPassword = () => {
     onError: (e) => console.log(e),
   });
 
+  useEffect(() => {
+    if (mutation.status === 'success') {
+      setPassword('')
+      setPassword2('')
+    }
+  }, [mutation.status])
+
   const formRef = useRef(null);
   const form = useZodForm({ schema: passwordValidation });
 
@@ -42,8 +50,20 @@ const ResetPassword = () => {
     formState: { errors },
   } = form;
 
+
   return (
+    <>
     <FormProvider {...form}>
+        {mutation.status === 'success' &&
+        <Hint type='success' className="w-full" >
+          Success
+        </Hint>
+        }
+        {mutation.status === 'error' &&
+        <Hint type='error' className="w-full" >
+          Error
+        </Hint>
+        }
       <form
         ref={formRef}
         action={resetPasswordAction}
@@ -82,6 +102,7 @@ const ResetPassword = () => {
         <Button type="submit">Submit</Button>
       </form>
     </FormProvider>
+    </>
   );
 };
 

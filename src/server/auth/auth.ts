@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
     PatreonProvider({
       clientId: env.PATREON_CLIENT_ID,
       clientSecret: env.PATREON_ACCESS_TOKEN,
-      authorization: { params: { scope: "identity.memberships campaigns" } },
+      authorization: { params: { scope: "identity.memberships" } },
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
