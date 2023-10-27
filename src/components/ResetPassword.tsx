@@ -79,6 +79,7 @@ const ResetPassword = () => {
           <Input
             {...register("password")}
             value={password}
+            className="w-full"
             onChange={(e) => setPassword(e.currentTarget.value)}
             type="password"
           />
@@ -91,6 +92,7 @@ const ResetPassword = () => {
           <Input
             {...register("password2")}
             value={password2}
+            className="w-full"
             onChange={(e) => setPassword2(e.currentTarget.value)}
             type="password"
           />
