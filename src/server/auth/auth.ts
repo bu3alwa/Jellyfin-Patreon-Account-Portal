@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { type NextAuthOptions, getServerSession } from "next-auth";
 import PatreonProvider from "next-auth/providers/patreon";
 import GoogleProvider from "next-auth/providers/google";
@@ -32,7 +35,11 @@ export const authOptions: NextAuthOptions = {
     PatreonProvider({
       clientId: env.PATREON_CLIENT_ID,
       clientSecret: env.PATREON_ACCESS_TOKEN,
-      authorization: { params: { scope: "identity.memberships" } },
+      authorization: {
+        params: {
+          scope: "identity identity[email]",
+        },
+      },
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -40,9 +47,43 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    signIn: async ({ account, user }) => {
+    signIn: async ({ account, user, profile }) => {
       const isAdmin = env.ADMIN_EMAIL === user.email;
-      if (account?.provider === "patreon") return true;
+
+      const campaignRes = await fetch(
+        "https://www.patreon.com/api/oauth2/v2/campaigns",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${env.PATREON_ACCESS_TOKEN}`,
+            Accept: "*/*",
+            credentials: "include",
+          },
+          credentials: "include",
+        },
+      );
+
+      const campaignData = (await campaignRes.json()) as {
+        data: { attributes: any; id: string; type: string }[];
+        meta: { pagination: { cursors: any; total: number } };
+      };
+
+      const campaignId = campaignData.data.find((i) => i.type === "campaign")
+        ?.id;
+
+      if (account?.provider === "patreon") {
+        if (campaignRes.status !== 200) return false;
+        const pledge = (profile as any)?.included?.find(
+          (i: any) => i.id === campaignId,
+        );
+
+        // Keep it simple for now if pledge campaign id is in profile
+        // then allowed to login. Not sure if inactive pledges show up
+        // on the profile
+        if (pledge) return true;
+        return false;
+      }
+
       if (isAdmin) return true;
 
       if (!user?.email) return false;

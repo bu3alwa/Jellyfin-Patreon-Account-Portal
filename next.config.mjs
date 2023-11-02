@@ -19,14 +19,15 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  experimental: {
-    serverActions: true,
-  },
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "c8.patreon.com",
+        hostname: "*.patreon.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.patreonusercontent.com",
       },
       {
         protocol: "https",
