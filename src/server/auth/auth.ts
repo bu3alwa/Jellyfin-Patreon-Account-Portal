@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     PatreonProvider({
       clientId: env.PATREON_CLIENT_ID,
-      clientSecret: env.PATREON_ACCESS_TOKEN,
+      clientSecret: env.PATREON_SECRET,
       authorization: {
         params: {
           scope: "identity identity[email]",
@@ -50,32 +50,43 @@ export const authOptions: NextAuthOptions = {
     signIn: async ({ account, user, profile }) => {
       const isAdmin = env.ADMIN_EMAIL === user.email;
 
-      const campaignRes = await fetch(
-        "https://www.patreon.com/api/oauth2/v2/campaigns",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${env.PATREON_ACCESS_TOKEN}`,
-            Accept: "*/*",
+      if (account?.provider === "patreon") {
+        // get campaign data for campaign id
+        const campaignRes = await fetch(
+          "https://www.patreon.com/api/oauth2/v2/campaigns",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${env.PATREON_ACCESS_TOKEN}`,
+              Accept: "*/*",
+              credentials: "include",
+            },
             credentials: "include",
           },
-          credentials: "include",
-        },
-      );
-
-      const campaignData = (await campaignRes.json()) as {
-        data: { attributes: any; id: string; type: string }[];
-        meta: { pagination: { cursors: any; total: number } };
-      };
-
-      const campaignId = campaignData.data.find((i) => i.type === "campaign")
-        ?.id;
-
-      if (account?.provider === "patreon") {
-        if (campaignRes.status !== 200) return false;
-        const pledge = (profile as any)?.included?.find(
-          (i: any) => i.id === campaignId,
         );
+
+        const campaignData = (await campaignRes.json()) as {
+          data: { attributes: any; id: string; type: string }[];
+          meta: { pagination: { cursors: any; total: number } };
+        };
+
+        // Make sure we have 200 before we move on
+        if (campaignRes.status !== 200) return false;
+
+        // if data is wrong just deny login
+        if (!Array.isArray(campaignData.data)) return false;
+
+        const campaignId = campaignData.data.find((i) => i.type === "campaign")
+          ?.id;
+
+        const p = profile as any; // cast for now, type it later =(
+
+        // more guards for saftey
+        if (!p.included) return false;
+        if (!Array.isArray(p.included)) return false;
+
+        // find the pledge with the campaignId
+        const pledge = p?.included?.find((i: any) => i.id === campaignId);
 
         // Keep it simple for now if pledge campaign id is in profile
         // then allowed to login. Not sure if inactive pledges show up
@@ -88,6 +99,7 @@ export const authOptions: NextAuthOptions = {
 
       if (!user?.email) return false;
 
+      // check if user is whitelisted and is allowed to be in
       const whitelist = await db.query.whitelist.findFirst({
         where: (whitelist, { eq }) => eq(whitelist.username, user.email!),
       });

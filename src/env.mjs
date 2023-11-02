@@ -10,6 +10,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     JELLYFIN_API_KEY: z.string(),
     PATREON_CLIENT_ID: z.string(),
+    PATREON_SECRET: z.string(),
     PATREON_ACCESS_TOKEN: z.string(),
     PATREON_HOOKS_SECRET: z.string(),
     NEXTAUTH_SECRET: z.string(),
@@ -35,6 +36,7 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    PATREON_SECRET: process.env.PATREON_SECRET,
     DOCKER: process.env.DOCKER,
     NODE_ENV: process.env.NODE_ENV,
     PATREON_ACCESS_TOKEN: process.env.PATREON_ACCESS_TOKEN,
